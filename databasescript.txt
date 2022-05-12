@@ -1,0 +1,126 @@
+CREATE DATABASE CPEN_DATA;
+
+CREATE SCHEMA dept;
+
+CREATE TABLE dept.course(
+	course_id VARCHAR(10) PRIMARY KEY,
+	course_name VARCHAR(50) NOT NULL,
+	credit_hours INT DEFAULT 3
+);
+
+create table dept.Student(
+	st_id VARCHAR(20) PRIMARY KEY,
+	st_fname VARCHAR(50) NOT NULL,
+	st_mname VARCHAR(50) DEFAULT NULL,
+	st_lName VARCHAR(50) NOT NULL,
+	st_phone CHAR(50) DEFAULT NULL,
+	course_id VARCHAR(10),
+	FOREIGN KEY(course_id)
+	REFERENCES dept.course(course_id)
+);
+
+CREATE TABLE dept.fee_payment(
+	total_fees DECIMAL NOT NULL,
+	amount_paid DECIMAL DEFAULT 0,
+	payment_date DATE NOT NULL,
+	payment_id SERIAL NOT NULL,
+	st_id VARCHAR(20) NOT NULL,
+	FOREIGN KEY(st_id)
+	REFERENCES dept.student(st_id)
+);
+
+CREATE TABLE dept.lecturer(
+	lecturer_id VARCHAR(20) PRIMARY KEY,
+	lecturer_fname VARCHAR(50) NOT NULL,
+	lecturer_lName VARCHAR(50) NOT NULL,
+	lecturer_phone CHAR(50) DEFAULT NULL,
+	course_id VARCHAR(10),
+	FOREIGN KEY(course_id)
+	REFERENCES dept.course(course_id)
+);
+
+CREATE TABLE dept.TA(
+	TA_id VARCHAR(20) PRIMARY KEY,
+	TA_fname VARCHAR(50) NOT NULL,
+	TA_lName VARCHAR(50) NOT NULL,
+	TA_phone CHAR(50) DEFAULT NULL,
+	lecturer_id VARCHAR(20) NOT NULL,
+	FOREIGN KEY(lecturer_id)
+	REFERENCES dept.lecturer(lecturer_id)
+);
+
+INSERT INTO dept.course(course_id, course_name, credit_hours)VALUES 
+('CPEN201', 'Introduction To Software Engineering', 3),
+('MATH205', 'Calculus II', 4),
+('FAEN204', 'Digital Circuits', 3),
+('CPEN203', 'C++ Programming', 3),
+('CPEN208', 'Discrete Mathematics', 2);
+
+INSERT INTO dept.student(st_id, st_fname, st_mname, st_lname, st_phone, course_id)VALUES 
+('10859457', 'Abdul', 'Kudus', 'Musah', '0248964501', 'CPEN201'),
+('15859457', 'Jeff', 'Joe', 'Antoh', '0208964579', 'FAEN204'),
+('15825059', 'Loyal', 'Aabid', 'Kalonh', '053964557', 'CPEN203'),
+('10019457', 'Ama', 'Awura', 'Kondoh', '05899645394', 'CPEN208'),
+('10801407', 'Kofi', 'Nyame', 'Kpodo', '0249904557', 'MATH205'),
+('10815897', 'Aci', 'John', 'Agyeman', '0209964557', 'CPEN208'),
+('11119457', 'Daniel', 'Bobib', 'Percy', '02359645950', 'FAEN204'),
+('10855807', 'Daniel','Kevin', 'Kyereh', '0348964500', 'MATH205'),
+('10811007', 'Konny', 'Mercy', 'Ighalo', '0248964522', 'MATH205'),
+('10859437', 'Ama', 'Akua', 'Andoh', '0248964598', 'FAEN204'),
+('10845751', 'Abdul', 'Farad', 'Loyala', '0248900557', 'CPEN208'),
+('10859979', 'Abdul', 'Abu', 'Agyeikum', '0248964593', 'MATH205'),
+('10850336', 'Jerremiah', 'John', 'Loren', '0248064117', 'CPEN201'),
+('10189745', 'Raade', 'Abdul', 'Ayariga', '0548864057', 'CPEN201'),
+('10478950', 'Osman', 'Joe', 'Pontahina', '0348504518', 'CPEN208'),
+('10235698', 'Paah', 'Kwasi', 'Kolesman', '0248902340', 'FAEN204'),
+('10859000', 'Allen', 'Kofi', 'Kumapata', '0248950137', 'MATH205'),
+('10801010', 'Abel', 'Edem', 'Akumbre', '0248101010', 'CPEN201');
+
+INSERT INTO dept.fee_payment(total_fees, amount_paid, payment_date,st_id)VALUES 
+(2023.5, 1500, '2022-1-18', '10801010'),
+(2023.5, 1000, '2022-1-19','10859457'),
+(2023.5, 1550.5, '2022-1-17','15859457'),
+(2023.5, 2000.5, '2022-1-17','10859000'),
+(2023.5, 1550, '2022-1-19','15825059'),
+(2023.5, 1500, '2022-1-16','10815897'),
+(2023.5, 2005.5, '2022-1-18','10801407'),
+(2023.5, 1333, '2022-1-21','10811007'),
+(2023.5, 1565, '2022-1-16','10019457'),
+(2023.5, 1533, '2022-1-14','11119457'),
+(2023.5, 2023.5, '2022-1-17','10855807'),
+(2023.5, 1500, '2022-1-18','10859437'),
+(2023.5, 1506.5, '2022-1-16','10850336'),
+(2023.5, 2023.5, '2022-1-19','10859979'),
+(2023.5, 1155.5, '2022-1-16','10235698'),
+(2023.5, 2000.5, '2022-1-18','10845751'),
+(2023.5, 1463.5, '2022-1-14','10478950'),
+(2023.5, 2000, '2022-1-20','10189745');
+
+INSERT INTO dept.lecturer(lecturer_id, lecturer_fname, lecturer_lname, lecturer_phone, course_id)VALUES 
+('501245789', 'Joseph', 'Okyere', '02445050505', 'CPEN201'),
+('511579870', 'Percy', 'Okai', '0555050593', 'CPEN208'),
+('500248899', 'Dennis', 'Danso', '0591111111', 'MATH205'),
+('521330303', 'Nana-Yaw', 'Addae-Poku','0596668120', 'CPEN203'),
+('577895050', 'Solomon', 'Annoh-Mensah', '0245658978', 'FAEN204');
+
+INSERT INTO dept.TA(ta_id, ta_fname, ta_lname, ta_phone, lecturer_id)VALUES
+('00123587', 'Jordan', 'Mensah', '0254221430', '501245789'),
+('00154896', 'Gideon', 'Nyamekye', '0250024557', '511579870'),
+('00158966', 'Rauf', 'Abubakr', '0298771120', '500248899'),
+('00203221', 'Kevin', 'Yeboah', '0504496521', '521330303'),
+('00113084', 'Richard', 'Nartey', '0295548763', '577895050');
+
+create or replace function dept.outstanding_fees()
+returns table (j json)
+language 'plpgsql'
+as
+$body$
+begin
+RETURN QUERY
+    SELECT row_to_json(row(CONCAT(st_fname, ' ', st_lname) ,s.st_id, total_fees-amount_paid))
+	FROM dept.student s INNER JOIN dept.fee_payment f
+	ON s.st_id = f.st_id;
+end;
+$body$;
+
+select * from dept.outstanding_fees();
